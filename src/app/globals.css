@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 200 6% 10%;
+    --foreground: 180 20% 99%;
+
+    --card: 200 6% 11%;
+    --card-foreground: 180 20% 99%;
+
+    --popover: 200 6% 12%;
+    --popover-foreground: 180 20% 99%;
+
+    --primary: 36 100% 58%;
+    --primary-foreground: 200 6% 10%;
+
+    --secondary: 200 6% 15%;
+    --secondary-foreground: 180 20% 99%;
+
+    --muted: 200 6% 18%;
+    --muted-foreground: 215 12% 66%;
+
+    --accent: 200 6% 15%;
+    --accent-foreground: 180 20% 99%;
+
+    --destructive: 4 84% 51%;
+    --destructive-foreground: 180 20% 99%;
+
+    --border: 200 6% 20%;
+    --input: 0 0% 100% / 0.06;
+    --ring: 36 100% 58%;
+
+    --radius: 0.875rem;
+
+    /* Verda brand */
+    --verda-amber: #FFA62B;
+    --verda-amber-hover: #E59422;
+    --verda-amber-soft: rgba(255, 166, 43, 0.19);
+    --verda-amber-glow: rgba(255, 166, 43, 0.40);
+    --verda-fg-2: rgba(255, 255, 255, 0.78);
+    --verda-fg-3: rgba(255, 255, 255, 0.60);
+    --verda-fg-4: rgba(255, 255, 255, 0.40);
+    --verda-raised: rgba(255, 255, 255, 0.02);
+    --verda-glass: rgba(23, 25, 26, 0.80);
+    --verda-border-strong: #515659;
+
+    /* Game-specific */
+    --protector-color: #FFA62B;
+    --pirate-color: #C084FC;
+
+    --font-display: 'Urbanist', system-ui, sans-serif;
+    --font-body: 'Host Grotesk', system-ui, sans-serif;
+  }
+
+  * { @apply border-border; }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+}
+
+::selection { background: rgba(255, 166, 43, 0.3); color: #fff; }
+
+@layer components {
+  .gradient-text {
+    background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.58) 100%);
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .card-raised { background: var(--verda-raised); border-radius: 18px; }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground font-semibold transition-colors duration-200;
+    font-family: var(--font-display);
+  }
+  .btn-primary:hover { background: var(--verda-amber-hover); }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center rounded-full border border-foreground text-foreground transition-colors duration-200;
+    font-family: var(--font-display);
+  }
+  .btn-outline:hover { @apply bg-white/10; }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center rounded-full transition-colors duration-200;
+    color: var(--verda-fg-2);
+  }
+  .btn-ghost:hover { @apply text-white bg-white/[0.06]; }
+
+  /* Game role badges */
+  .badge-protector {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium;
+    background: rgba(255, 166, 43, 0.15);
+    color: var(--protector-color);
+    border: 1px solid rgba(255, 166, 43, 0.3);
+  }
+  .badge-pirate {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium;
+    background: rgba(192, 132, 252, 0.15);
+    color: var(--pirate-color);
+    border: 1px solid rgba(192, 132, 252, 0.3);
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #17191A; }
+::-webkit-scrollbar-thumb { background: #3a3d40; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #4a4d50; }
