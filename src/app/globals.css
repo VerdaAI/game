@@ -4,112 +4,190 @@
 
 @layer base {
   :root {
+    /* === Handoff tokens === */
+    --pp-bg: #17191A;
+    --pp-bg2: #1b1d1e;
+    --pp-card: rgba(255, 255, 255, 0.025);
+    --pp-card2: #1e2021;
+    --pp-card3: #232628;
+    --pp-text: #FCFDFD;
+    --pp-fg2: rgba(255, 255, 255, 0.80);
+    --pp-fg3: rgba(255, 255, 255, 0.58);
+    --pp-fg4: rgba(255, 255, 255, 0.40);
+    --pp-bd: rgba(255, 255, 255, 0.09);
+    --pp-bd2: rgba(255, 255, 255, 0.16);
+    --pp-amber: #FFA62B;
+    --pp-amber-hover: #E59422;
+    --pp-amber-ink: #17191A;
+    --pp-amber-soft: rgba(255, 166, 43, 0.12);
+    --pp-amber-bd: rgba(255, 166, 43, 0.30);
+    --pp-amber-text: #FFB94D;
+    --pp-purple: #C084FC;
+    --pp-purple-soft: rgba(192, 132, 252, 0.12);
+    --pp-purple-bd: rgba(192, 132, 252, 0.32);
+    --pp-purple-text: #CDA0FF;
+    --pp-purple-ink: #1a1326;
+    --pp-green: #4ADE80;
+    --pp-green-soft: rgba(74, 222, 128, 0.12);
+    --pp-red: #F87171;
+    --pp-nav: rgba(23, 25, 26, 0.72);
+    --pp-glow: rgba(255, 166, 43, 0.38);
+    --pp-glow2: rgba(192, 132, 252, 0.22);
+    --pp-mono: rgba(255, 255, 255, 0.55);
+
+    /* Tailwind semantic */
     --background: 200 6% 10%;
     --foreground: 180 20% 99%;
-
     --card: 200 6% 11%;
     --card-foreground: 180 20% 99%;
-
-    --popover: 200 6% 12%;
-    --popover-foreground: 180 20% 99%;
-
     --primary: 36 100% 58%;
     --primary-foreground: 200 6% 10%;
-
     --secondary: 200 6% 15%;
     --secondary-foreground: 180 20% 99%;
-
     --muted: 200 6% 18%;
     --muted-foreground: 215 12% 66%;
-
-    --accent: 200 6% 15%;
-    --accent-foreground: 180 20% 99%;
-
     --destructive: 4 84% 51%;
     --destructive-foreground: 180 20% 99%;
-
     --border: 200 6% 20%;
     --input: 0 0% 100% / 0.06;
     --ring: 36 100% 58%;
-
     --radius: 0.875rem;
-
-    /* Verda brand */
-    --verda-amber: #FFA62B;
-    --verda-amber-hover: #E59422;
-    --verda-amber-soft: rgba(255, 166, 43, 0.19);
-    --verda-amber-glow: rgba(255, 166, 43, 0.40);
-    --verda-fg-2: rgba(255, 255, 255, 0.78);
-    --verda-fg-3: rgba(255, 255, 255, 0.60);
-    --verda-fg-4: rgba(255, 255, 255, 0.40);
-    --verda-raised: rgba(255, 255, 255, 0.02);
-    --verda-glass: rgba(23, 25, 26, 0.80);
-    --verda-border-strong: #515659;
-
-    /* Game-specific */
-    --protector-color: #FFA62B;
-    --pirate-color: #C084FC;
 
     --font-display: 'Urbanist', system-ui, sans-serif;
     --font-body: 'Host Grotesk', system-ui, sans-serif;
   }
 
-  * { @apply border-border; }
+  * { box-sizing: border-box; }
   body {
-    @apply bg-background text-foreground;
+    background: var(--pp-bg);
+    color: var(--pp-text);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
+    margin: 0;
   }
   h1, h2, h3, h4 {
     font-family: var(--font-display);
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: -0.02em;
   }
 }
 
 ::selection { background: rgba(255, 166, 43, 0.3); color: #fff; }
 
+/* === Animations === */
+@keyframes pp-scan {
+  0%, 100% { transform: translateY(-130%); }
+  50% { transform: translateY(130%); }
+}
+@keyframes pp-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-25%); }
+}
+@keyframes pp-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.9; }
+}
+@keyframes pp-prog {
+  from { width: 4%; }
+  to { width: 100%; }
+}
+@keyframes pp-count {
+  from { width: 100%; }
+  to { width: 8%; }
+}
+
 @layer components {
   .gradient-text {
-    background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.58) 100%);
+    background: linear-gradient(180deg, var(--pp-text) 0%, rgba(255, 255, 255, 0.58) 100%);
     -webkit-background-clip: text;
-            background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
   }
 
-  .card-raised { background: var(--verda-raised); border-radius: 18px; }
-
+  /* Buttons */
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground font-semibold transition-colors duration-200;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    border-radius: 999px;
+    border: none;
+    background: var(--pp-amber);
+    color: var(--pp-amber-ink);
     font-family: var(--font-display);
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
   }
-  .btn-primary:hover { background: var(--verda-amber-hover); }
+  .btn-primary:hover { background: var(--pp-amber-hover); }
 
   .btn-outline {
-    @apply inline-flex items-center justify-center rounded-full border border-foreground text-foreground transition-colors duration-200;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--pp-text);
+    border: 1px solid var(--pp-bd2);
     font-family: var(--font-display);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
   }
-  .btn-outline:hover { @apply bg-white/10; }
+  .btn-outline:hover { background: var(--pp-card2); }
 
-  .btn-ghost {
-    @apply inline-flex items-center justify-center rounded-full transition-colors duration-200;
-    color: var(--verda-fg-2);
+  .btn-purple {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    border-radius: 999px;
+    border: none;
+    background: var(--pp-purple);
+    color: var(--pp-purple-ink);
+    font-family: var(--font-display);
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
   }
-  .btn-ghost:hover { @apply text-white bg-white/[0.06]; }
+  .btn-purple:hover { opacity: 0.9; }
 
-  /* Game role badges */
+  /* Badges */
   .badge-protector {
-    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium;
-    background: rgba(255, 166, 43, 0.15);
-    color: var(--protector-color);
-    border: 1px solid rgba(255, 166, 43, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--pp-amber-text);
+    background: var(--pp-amber-soft);
+    border: 1px solid var(--pp-amber-bd);
+    padding: 1px 8px;
+    border-radius: 99px;
   }
   .badge-pirate {
-    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium;
-    background: rgba(192, 132, 252, 0.15);
-    color: var(--pirate-color);
-    border: 1px solid rgba(192, 132, 252, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--pp-purple-text);
+    background: var(--pp-purple-soft);
+    border: 1px solid var(--pp-purple-bd);
+    padding: 1px 8px;
+    border-radius: 99px;
+  }
+
+  /* Section pattern */
+  .section-eyebrow {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--pp-amber-text);
+    margin-bottom: 14px;
   }
 }
 

@@ -1,0 +1,254 @@
+[
+  {
+    "image": "demo-01.jpg",
+    "manipulation": "original",
+    "size_kb": 411.9,
+    "match": true
+  },
+  {
+    "image": "demo-01.jpg",
+    "manipulation": "compress_q40",
+    "size_kb": 109.5,
+    "match": true
+  },
+  {
+    "image": "demo-01.jpg",
+    "manipulation": "compress_q20",
+    "size_kb": 63.3,
+    "match": true
+  },
+  {
+    "image": "demo-01.jpg",
+    "manipulation": "compress_q8",
+    "size_kb": 31.2,
+    "match": false
+  },
+  {
+    "image": "demo-01.jpg",
+    "manipulation": "compress_q5",
+    "size_kb": 24.2,
+    "match": false
+  },
+  {
+    "image": "demo-01.jpg",
+    "manipulation": "filter_light",
+    "size_kb": 435.0,
+    "match": true
+  },
+  {
+    "image": "demo-01.jpg",
+    "manipulation": "filter_heavy",
+    "size_kb": 437.3,
+    "match": false
+  },
+  {
+    "image": "demo-01.jpg",
+    "manipulation": "crop_5%",
+    "size_kb": 358.7,
+    "match": true
+  },
+  {
+    "image": "demo-01.jpg",
+    "manipulation": "crop_10%",
+    "size_kb": 297.6,
+    "match": true
+  },
+  {
+    "image": "demo-01.jpg",
+    "manipulation": "crop_15%",
+    "size_kb": 239.0,
+    "match": true
+  },
+  {
+    "image": "demo-01.jpg",
+    "manipulation": "mirror",
+    "size_kb": 426.6,
+    "match": true
+  },
+  {
+    "image": "demo-01.jpg",
+    "manipulation": "resize_33%_up",
+    "size_kb": 197.1,
+    "match": true
+  },
+  {
+    "image": "demo-01.jpg",
+    "manipulation": "screenshot_q55",
+    "size_kb": 140.0,
+    "match": true
+  },
+  {
+    "image": "demo-01.jpg",
+    "manipulation": "border_30px",
+    "size_kb": 435.2,
+    "match": false
+  },
+  {
+    "image": "demo-05.jpg",
+    "manipulation": "original",
+    "size_kb": 123.5,
+    "match": true
+  },
+  {
+    "image": "demo-05.jpg",
+    "manipulation": "compress_q40",
+    "size_kb": 32.0,
+    "match": true
+  },
+  {
+    "image": "demo-05.jpg",
+    "manipulation": "compress_q20",
+    "size_kb": 25.1,
+    "match": false
+  },
+  {
+    "image": "demo-05.jpg",
+    "manipulation": "compress_q8",
+    "size_kb": 20.8,
+    "match": false
+  },
+  {
+    "image": "demo-05.jpg",
+    "manipulation": "compress_q5",
+    "size_kb": 19.5,
+    "match": false
+  },
+  {
+    "image": "demo-05.jpg",
+    "manipulation": "filter_light",
+    "size_kb": 127.7,
+    "match": true
+  },
+  {
+    "image": "demo-05.jpg",
+    "manipulation": "filter_heavy",
+    "size_kb": 114.3,
+    "match": false
+  },
+  {
+    "image": "demo-05.jpg",
+    "manipulation": "crop_5%",
+    "size_kb": 103.6,
+    "match": true
+  },
+  {
+    "image": "demo-05.jpg",
+    "manipulation": "crop_10%",
+    "size_kb": 88.7,
+    "match": true
+  },
+  {
+    "image": "demo-05.jpg",
+    "manipulation": "crop_15%",
+    "size_kb": 75.8,
+    "match": true
+  },
+  {
+    "image": "demo-05.jpg",
+    "manipulation": "mirror",
+    "size_kb": 123.3,
+    "match": true
+  },
+  {
+    "image": "demo-05.jpg",
+    "manipulation": "resize_33%_up",
+    "size_kb": 81.8,
+    "match": true
+  },
+  {
+    "image": "demo-05.jpg",
+    "manipulation": "screenshot_q55",
+    "size_kb": 38.5,
+    "match": true
+  },
+  {
+    "image": "demo-05.jpg",
+    "manipulation": "border_30px",
+    "size_kb": 129.8,
+    "match": true
+  },
+  {
+    "image": "demo-08.jpg",
+    "manipulation": "original",
+    "size_kb": 257.5,
+    "match": true
+  },
+  {
+    "image": "demo-08.jpg",
+    "manipulation": "compress_q40",
+    "size_kb": 83.0,
+    "match": true
+  },
+  {
+    "image": "demo-08.jpg",
+    "manipulation": "compress_q20",
+    "size_kb": 58.2,
+    "match": false
+  },
+  {
+    "image": "demo-08.jpg",
+    "manipulation": "compress_q8",
+    "size_kb": 37.8,
+    "match": false
+  },
+  {
+    "image": "demo-08.jpg",
+    "manipulation": "compress_q5",
+    "size_kb": 30.9,
+    "match": false
+  },
+  {
+    "image": "demo-08.jpg",
+    "manipulation": "filter_light",
+    "size_kb": 270.9,
+    "match": true
+  },
+  {
+    "image": "demo-08.jpg",
+    "manipulation": "filter_heavy",
+    "size_kb": 276.8,
+    "match": true
+  },
+  {
+    "image": "demo-08.jpg",
+    "manipulation": "crop_5%",
+    "size_kb": 233.7,
+    "match": true
+  },
+  {
+    "image": "demo-08.jpg",
+    "manipulation": "crop_10%",
+    "size_kb": 210.8,
+    "match": true
+  },
+  {
+    "image": "demo-08.jpg",
+    "manipulation": "crop_15%",
+    "size_kb": 191.6,
+    "match": true
+  },
+  {
+    "image": "demo-08.jpg",
+    "manipulation": "mirror",
+    "size_kb": 258.7,
+    "match": true
+  },
+  {
+    "image": "demo-08.jpg",
+    "manipulation": "resize_33%_up",
+    "size_kb": 144.6,
+    "match": true
+  },
+  {
+    "image": "demo-08.jpg",
+    "manipulation": "screenshot_q55",
+    "size_kb": 99.9,
+    "match": true
+  },
+  {
+    "image": "demo-08.jpg",
+    "manipulation": "border_30px",
+    "size_kb": 269.3,
+    "match": true
+  }
+]

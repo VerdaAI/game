@@ -1,44 +1,35 @@
 "use client";
 
 import { useState } from "react";
-import { SplashScreen } from "@/components/game/SplashScreen";
+import { LandingPage } from "@/components/landing/LandingPage";
 import { SoloDemo } from "@/components/game/SoloDemo";
 
-type Mode = "splash" | "solo" | "multiplayer";
+type Mode = "landing" | "solo" | "play";
 
 export default function Home() {
-  const [mode, setMode] = useState<Mode>("splash");
+  const [mode, setMode] = useState<Mode>("landing");
 
   if (mode === "solo") {
-    return <SoloDemo onBack={() => setMode("splash")} />;
+    return <SoloDemo onBack={() => setMode("landing")} />;
   }
 
-  if (mode === "multiplayer") {
-    // TODO: Increment 2
+  if (mode === "play") {
+    // TODO: Quick Play
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="text-center space-y-4">
-          <h2 className="text-2xl font-display font-semibold">
-            Multiplayer Coming Soon
-          </h2>
-          <p className="text-muted-foreground">
-            Play the solo demo to see how watermarks protect content.
-          </p>
-          <button
-            onClick={() => setMode("splash")}
-            className="btn-outline px-6 py-2.5 text-sm"
-          >
-            Back
-          </button>
+          <h2 className="text-2xl font-display font-bold">Quick Play Coming Soon</h2>
+          <p style={{ color: "var(--pp-fg3)" }}>Try the solo demo to see watermarks in action.</p>
+          <button onClick={() => setMode("landing")} className="btn-outline px-6 py-2.5 text-sm">Back</button>
         </div>
       </div>
     );
   }
 
   return (
-    <SplashScreen
-      onSoloDemo={() => setMode("solo")}
-      onMultiplayer={() => setMode("multiplayer")}
+    <LandingPage
+      onDemo={() => setMode("solo")}
+      onPlay={() => setMode("play")}
     />
   );
 }
