@@ -124,13 +124,12 @@ export function SoloDemo({ onBack }: SoloDemoProps) {
   }
   const [shuffledImages, setShuffledImages] = useState(() => doShuffle());
   const refreshFeed = () => setShuffledImages(doShuffle());
-  const manipLabels = manips.map((m) => MANIPULATIONS.find((d) => d.key === m)!.label).join(" + ");
+  const manipLabels = manips.length === 0 ? "No modifications" : manips.map((m) => MANIPULATIONS.find((d) => d.key === m)!.label).join(" + ");
 
   const toggleManip = (key: ManipulationType) => {
     setManips((prev) => {
       if (prev.includes(key)) {
-        const next = prev.filter((k) => k !== key);
-        return next.length === 0 ? [key] : next;
+        return prev.filter((k) => k !== key); // allow empty
       }
       if (prev.length >= 3) return prev;
       return [...prev, key];
@@ -145,9 +144,16 @@ export function SoloDemo({ onBack }: SoloDemoProps) {
     (async () => {
       try {
         const img = await loadImage(image.src);
-        const blob = configs.length === 1
-          ? await applyManipulation(img, configs[0].type, configs[0].strength)
-          : await applyMultipleManipulations(img, configs);
+        let blob: Blob;
+        if (configs.length === 0) {
+          // No manipulations — use original as-is
+          const resp = await fetch(image.src);
+          blob = await resp.blob();
+        } else if (configs.length === 1) {
+          blob = await applyManipulation(img, configs[0].type, configs[0].strength);
+        } else {
+          blob = await applyMultipleManipulations(img, configs);
+        }
         if (cancelled) return;
         if (previewRef.current) URL.revokeObjectURL(previewRef.current);
         const url = URL.createObjectURL(blob);
