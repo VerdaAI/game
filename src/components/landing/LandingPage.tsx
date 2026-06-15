@@ -17,6 +17,7 @@ import {
   Sparkles,
   LogIn,
   Split,
+  Hand,
   Swords,
   Flag,
   Trophy,
@@ -71,11 +72,11 @@ const PROOFS = [
 ];
 
 const STEPS = [
-  { icon: LogIn, num: "01", title: "Join instantly", desc: "Tap Quick Play — no room codes needed" },
-  { icon: Split, num: "02", title: "Pick your side", desc: "Protector or Pirate \u2014 15 seconds" },
-  { icon: Swords, num: "03", title: "Steal & trace", desc: "Pirates disguise, Protectors hunt \u2014 5 rounds" },
-  { icon: Flag, num: "04", title: "End screen", desc: "Team winner, your stats & a shareable card" },
-  { icon: Trophy, num: "05", title: "Climb the board", desc: "Points roll into the weekly leaderboard" },
+  { icon: LogIn, num: "01", title: "Start the challenge", desc: "Enter your name and jump straight in" },
+  { icon: Hand, num: "02", title: "Pick a target", desc: "Choose an image from the feed to steal" },
+  { icon: Swords, num: "03", title: "Disguise & post", desc: "Apply manipulations, then post it \u2014 5 rounds" },
+  { icon: Flag, num: "04", title: "Results", desc: "See if Verda caught you \u2014 scores update live" },
+  { icon: Trophy, num: "05", title: "Climb the board", desc: "Your score goes to the weekly leaderboard" },
 ];
 
 const LEADERBOARD = [
@@ -240,8 +241,8 @@ export function LandingPage({ onDemo, onPlay }: LandingPageProps) {
                 Try the 30-sec demo
               </button>
               <button onClick={onPlay} className="btn-outline" style={{ padding: "14px 26px", fontSize: 16 }}>
-                <Users size={18} />
-                Quick Play
+                <Skull size={18} />
+                Daily Challenge
               </button>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
@@ -920,7 +921,7 @@ export function LandingPage({ onDemo, onPlay }: LandingPageProps) {
                   "Browse the feed and pick content to steal",
                   "Disguise it: filter, screenshot, resize, convert",
                   <>
-                    Pick an intensity — heavier edits = more points <em style={{ color: "var(--pp-fg3)" }}>if you evade</em>
+                    Stack up to 3 manipulations — more edits = more points <em style={{ color: "var(--pp-fg3)" }}>if you evade</em>
                   </>,
                 ].map((text, i) => (
                   <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
@@ -930,11 +931,8 @@ export function LandingPage({ onDemo, onPlay }: LandingPageProps) {
                 ))}
               </div>
               <div style={{ display: "flex", gap: 7, alignItems: "center", marginBottom: 18, flexWrap: "wrap" }}>
-                {["Light \u00d71", "Medium \u00d71.5", "Heavy \u00d72.5"].map((label) => (
-                  <span key={label} className="badge-pirate" style={{ fontSize: 12, fontWeight: 700, padding: "5px 11px" }}>
-                    {label}
-                  </span>
-                ))}
+                <span className="badge-pirate" style={{ fontSize: 12, fontWeight: 700, padding: "5px 11px" }}>+15 per evasion</span>
+                <span className="badge-pirate" style={{ fontSize: 12, fontWeight: 700, padding: "5px 11px" }}>+5 bonus per extra edit</span>
               </div>
               <div style={{ display: "flex", gap: 10 }}>
                 {[
@@ -1384,8 +1382,8 @@ export function LandingPage({ onDemo, onPlay }: LandingPageProps) {
               Start the demo
             </button>
             <button onClick={onPlay} className="btn-outline" style={{ padding: "15px 30px", fontSize: 16 }}>
-              <Users size={18} />
-              Quick Play
+              <Skull size={18} />
+              Daily Challenge
             </button>
           </div>
         </div>

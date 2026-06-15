@@ -102,14 +102,11 @@ const INT_DEFS = [
 export function SoloDemo({ onBack }: SoloDemoProps) {
   const [screen, setScreen] = useState<Screen>("feed");
   const [picked, setPicked] = useState(0);
-  type Strength = "light" | "medium" | "heavy";
-  type ManipConfig = { type: ManipulationType; strength: Strength };
-  const [manipConfigs, setManipConfigs] = useState<ManipConfig[]>([{ type: "remove_watermark", strength: "medium" }]);
+  const [manips, setManips] = useState<ManipulationType[]>(["remove_watermark"]);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [manipBlob, setManipBlob] = useState<Blob | null>(null);
-  const [isDecoding, setIsDecoding] = useState(false);
   const [decodeResult, setDecodeResult] = useState<{
-    match: boolean;
+    match: boolean | null; // null = still scanning
     watermark_ref: string;
   } | null>(null);
   const previewRef = useRef<string | null>(null);
@@ -117,7 +114,6 @@ export function SoloDemo({ onBack }: SoloDemoProps) {
   const stepIdx = SCREEN_ORDER.indexOf(screen);
   const image = IMAGES[picked];
 
-  // Shuffle feed order — reshuffle on refresh
   function doShuffle() {
     const arr = IMAGES.map((im, i) => ({ ...im, originalIdx: i }));
     for (let i = arr.length - 1; i > 0; i--) {
@@ -128,79 +124,60 @@ export function SoloDemo({ onBack }: SoloDemoProps) {
   }
   const [shuffledImages, setShuffledImages] = useState(() => doShuffle());
   const refreshFeed = () => setShuffledImages(doShuffle());
-  const manipLabels = manipConfigs.map((c) => MANIPULATIONS.find((d) => d.key === c.type)!.label).join(" + ");
-  const manips = manipConfigs.map((c) => c.type);
+  const manipLabels = manips.map((m) => MANIPULATIONS.find((d) => d.key === m)!.label).join(" + ");
 
   const toggleManip = (key: ManipulationType) => {
-    setManipConfigs((prev) => {
-      if (prev.some((c) => c.type === key)) {
-        const next = prev.filter((c) => c.type !== key);
-        return next.length === 0 ? [{ type: key, strength: "medium" as Strength }] : next;
+    setManips((prev) => {
+      if (prev.includes(key)) {
+        const next = prev.filter((k) => k !== key);
+        return next.length === 0 ? [key] : next;
       }
       if (prev.length >= 3) return prev;
-      return [...prev, { type: key, strength: "medium" as Strength }];
+      return [...prev, key];
     });
   };
 
-  const setManipStrength = (key: ManipulationType, strength: Strength) => {
-    setManipConfigs((prev) => prev.map((c) => c.type === key ? { ...c, strength } : c));
-  };
-
-  // Generate live preview when manipulation configs change
+  // Generate live preview
   useEffect(() => {
     if (screen !== "disguise") return;
     let cancelled = false;
-
+    const configs = manips.map((m) => ({ type: m, strength: "medium" as const }));
     (async () => {
       try {
         const img = await loadImage(image.src);
-        const blob = manipConfigs.length === 1
-          ? await applyManipulation(img, manipConfigs[0].type, manipConfigs[0].strength)
-          : await applyMultipleManipulations(img, manipConfigs);
+        const blob = configs.length === 1
+          ? await applyManipulation(img, configs[0].type, configs[0].strength)
+          : await applyMultipleManipulations(img, configs);
         if (cancelled) return;
         if (previewRef.current) URL.revokeObjectURL(previewRef.current);
         const url = URL.createObjectURL(blob);
         previewRef.current = url;
         setPreviewUrl(url);
         setManipBlob(blob);
-      } catch (e) {
-        console.error("Manipulation failed:", e);
-      }
+      } catch (e) { console.error("Manipulation failed:", e); }
     })();
-
     return () => { cancelled = true; };
-  }, [screen, manipConfigs, image.src]);
+  }, [screen, manips, image.src]);
 
-  // Cleanup preview URL on unmount
   useEffect(() => {
-    return () => {
-      if (previewRef.current) URL.revokeObjectURL(previewRef.current);
-    };
+    return () => { if (previewRef.current) URL.revokeObjectURL(previewRef.current); };
   }, []);
 
+  // Post stolen content — go to result immediately, decode in background
   const handleSteal = useCallback(async () => {
     if (!manipBlob) return;
-    setScreen("scan");
-    setIsDecoding(true);
-    setDecodeResult(null);
+    setDecodeResult({ match: null, watermark_ref: "" }); // null = scanning
+    setScreen("result");
 
     try {
       const formData = new FormData();
       formData.append("file", manipBlob, "stolen.jpg");
-
       const resp = await fetch("/api/decode", { method: "POST", body: formData });
       const data = await resp.json();
-
-      setDecodeResult({
-        match: data.match ?? false,
-        watermark_ref: data.watermark_ref ?? "",
-      });
+      setDecodeResult({ match: data.match ?? false, watermark_ref: data.watermark_ref ?? "" });
     } catch (e) {
       console.error("Decode failed:", e);
       setDecodeResult({ match: false, watermark_ref: "" });
-    } finally {
-      setIsDecoding(false);
-      setScreen("result");
     }
   }, [manipBlob]);
 
@@ -212,7 +189,7 @@ export function SoloDemo({ onBack }: SoloDemoProps) {
   };
   const reset = () => {
     setPicked(0);
-    setManipConfigs([{ type: "remove_watermark", strength: "medium" }]);
+    setManips(["remove_watermark"]);
     setPreviewUrl(null);
     setManipBlob(null);
     setDecodeResult(null);
@@ -365,57 +342,20 @@ export function SoloDemo({ onBack }: SoloDemoProps) {
                     </div>
                   </div>
                   <div>
-                    {/* 2×4 grid — all manipulations visible, each with controls */}
+                    {/* 3×3 toggle grid — no intensity, just on/off */}
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 9 }}>
                       <span style={{ fontSize: 12, fontWeight: 600, color: "var(--pp-fg3)" }}>Manipulations</span>
-                      <span style={{ fontSize: 11, color: "var(--pp-fg4)" }}>{manips.length}/3 selected</span>
+                      <span style={{ fontSize: 11, color: "var(--pp-fg4)" }}>{manips.length}/3</span>
                     </div>
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6, marginBottom: 14 }}>
                       {MANIPULATIONS.map((m) => {
                         const active = manips.includes(m.key);
-                        const cfg = manipConfigs.find((c) => c.type === m.key);
                         const Icon = ICON_MAP[m.icon] || SlidersHorizontal;
                         const atMax = manips.length >= 3 && !active;
-                        const hasIntensity = !["mirror"].includes(m.key);
                         return (
-                          <div
-                            key={m.key}
-                            onClick={() => !atMax && toggleManip(m.key)}
-                            style={{
-                              borderRadius: 10,
-                              padding: "8px 8px 6px",
-                              border: active ? "1px solid var(--pp-purple-bd)" : "1px solid var(--pp-bd)",
-                              background: active ? "var(--pp-purple-soft)" : "var(--pp-card2)",
-                              opacity: atMax ? 0.35 : 1,
-                              transition: "all 0.15s",
-                              cursor: atMax ? "not-allowed" : "pointer",
-                            }}
-                          >
-                            {/* Header — icon + label + toggle */}
-                            <div
-                              style={{ display: "flex", alignItems: "center", gap: 6, width: "100%", color: active ? "var(--pp-purple-text)" : "var(--pp-fg2)", textAlign: "left" }}
-                            >
-                              <Icon size={13} />
-                              <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 10.5, flex: 1, lineHeight: 1.2 }}>{m.label}</span>
-                              {m.limited && <span style={{ fontSize: 8, fontWeight: 700, color: "var(--pp-amber-text)", background: "var(--pp-amber-soft)", border: "1px solid var(--pp-amber-bd)", padding: "1px 4px", borderRadius: 99 }}>~10%</span>}
-                              {/* Checkbox */}
-                              <span style={{ width: 14, height: 14, borderRadius: 3, border: active ? "1px solid var(--pp-purple)" : "1px solid var(--pp-bd2)", background: active ? "var(--pp-purple)" : "transparent", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, color: "#fff", flexShrink: 0 }}>
-                                {active && "✓"}
-                              </span>
-                            </div>
-                            {/* Per-card intensity — only when active and has intensity */}
-                            {active && hasIntensity && (
-                              <div style={{ display: "flex", gap: 3, marginTop: 6 }} onClick={(e) => e.stopPropagation()}>
-                                {INT_DEFS.map((it) => {
-                                  const sel = cfg?.strength === it.key;
-                                  return (
-                                    <button key={it.key} onClick={() => setManipStrength(m.key, it.key)} style={{ flex: 1, padding: "3px 1px", borderRadius: 5, cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 9, border: sel ? "1px solid var(--pp-purple-bd)" : "1px solid transparent", background: sel ? "rgba(192,132,252,0.2)" : "transparent", color: sel ? "var(--pp-purple-text)" : "var(--pp-fg4)", textAlign: "center" }}>
-                                      {m.key === "overlay_watermark" ? ["S", "M", "L"][INT_DEFS.indexOf(it)] : it.label}
-                                    </button>
-                                  );
-                                })}
-                              </div>
-                            )}
+                          <div key={m.key} onClick={() => !atMax && toggleManip(m.key)} style={{ borderRadius: 10, padding: "10px 8px", border: active ? "1px solid var(--pp-purple-bd)" : "1px solid var(--pp-bd)", background: active ? "var(--pp-purple-soft)" : "var(--pp-card2)", opacity: atMax ? 0.35 : 1, cursor: atMax ? "not-allowed" : "pointer", transition: "all 0.15s", display: "flex", flexDirection: "column", alignItems: "center", gap: 5, textAlign: "center" }}>
+                            <Icon size={16} style={{ color: active ? "var(--pp-purple-text)" : "var(--pp-fg3)" }} />
+                            <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 10, color: active ? "var(--pp-purple-text)" : "var(--pp-fg2)", lineHeight: 1.2 }}>{m.label}</span>
                           </div>
                         );
                       })}
@@ -490,48 +430,113 @@ export function SoloDemo({ onBack }: SoloDemoProps) {
             )}
 
             {/* RESULT */}
-            {screen === "result" && decodeResult && (
+            {screen === "result" && decodeResult && (() => {
+              const scanning = decodeResult.match === null;
+              const caught = decodeResult.match === true;
+              return (
               <div style={{ padding: "20px 18px 28px" }}>
-                <div style={{ textAlign: "center", marginBottom: 20 }}>
-                  <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 16px", borderRadius: 999, background: decodeResult.match ? "var(--pp-amber-soft)" : "rgba(248,113,113,0.15)", border: `1px solid ${decodeResult.match ? "var(--pp-amber-bd)" : "rgba(248,113,113,0.3)"}`, color: decodeResult.match ? "var(--pp-amber-text)" : "var(--pp-red)", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 13, letterSpacing: "0.06em", marginBottom: 14 }}>
-                    <ShieldCheck size={16} />
-                    {decodeResult.match ? "CAUGHT" : "EVADED"}
+                {/* Scanning state — prominent visual */}
+                {scanning && (
+                  <div style={{ marginBottom: 20 }}>
+                    <div style={{ position: "relative", borderRadius: 18, overflow: "hidden", border: "2px solid var(--pp-amber-bd)", boxShadow: "0 0 40px rgba(255,166,43,0.15)", marginBottom: 16 }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={previewUrl || image.src} alt="Scanning" style={{ width: "100%", height: "auto", display: "block", opacity: 0.5, maxHeight: "40vh", objectFit: "contain", background: "#0d0d11" }} />
+                      <ScanOverlay width={400} height={500} />
+                      {/* Corner brackets */}
+                      {[
+                        { top: 14, left: 14, borderTop: "2px solid rgba(255,166,43,0.6)", borderLeft: "2px solid rgba(255,166,43,0.6)" },
+                        { top: 14, right: 14, borderTop: "2px solid rgba(255,166,43,0.6)", borderRight: "2px solid rgba(255,166,43,0.6)" },
+                        { bottom: 14, left: 14, borderBottom: "2px solid rgba(255,166,43,0.6)", borderLeft: "2px solid rgba(255,166,43,0.6)" },
+                        { bottom: 14, right: 14, borderBottom: "2px solid rgba(255,166,43,0.6)", borderRight: "2px solid rgba(255,166,43,0.6)" },
+                      ].map((pos, i) => (
+                        <div key={i} style={{ position: "absolute", width: 22, height: 22, zIndex: 3, ...pos }} />
+                      ))}
+                      {/* Center fingerprint */}
+                      <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 56, height: 56, borderRadius: "50%", background: "rgba(15,17,18,0.65)", border: "1px solid var(--pp-amber-bd)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 4 }}>
+                        <Fingerprint size={28} style={{ color: "var(--pp-amber)", animation: "pp-pulse 1.4s ease-in-out infinite" }} />
+                      </div>
+                      {/* Stolen from badge */}
+                      <span style={{ position: "absolute", bottom: 12, left: 12, display: "inline-flex", alignItems: "center", gap: 5, fontSize: 11, fontWeight: 600, color: "var(--pp-purple-text)", background: "rgba(15,17,18,0.8)", border: "1px solid var(--pp-purple-bd)", padding: "4px 10px", borderRadius: 99, zIndex: 4 }}>
+                        {manipLabels} applied
+                      </span>
+                    </div>
+                    <div style={{ textAlign: "center", marginBottom: 16 }}>
+                      <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 18, marginBottom: 6 }}>Verda is scanning...</div>
+                      <div style={{ fontSize: 13, color: "var(--pp-fg3)", marginBottom: 12 }}>Running live decode on your manipulated image</div>
+                      <div style={{ width: 200, height: 5, borderRadius: 99, background: "var(--pp-card2)", border: "1px solid var(--pp-bd)", overflow: "hidden", margin: "0 auto" }}>
+                        <div style={{ height: "100%", background: "linear-gradient(90deg,var(--pp-amber),var(--pp-amber-hover))", animation: "pp-prog 8s ease-out forwards" }} />
+                      </div>
+                    </div>
+                    {/* What's happening explainer */}
+                    <div style={{ borderRadius: 14, border: "1px solid var(--pp-bd)", background: "var(--pp-card2)", padding: 16 }}>
+                      <div style={{ fontSize: 12, fontWeight: 600, color: "var(--pp-fg2)", marginBottom: 10, fontFamily: "var(--font-display)" }}>What&apos;s happening right now</div>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                        {[
+                          { step: "1", text: "Your manipulated image was uploaded to Verda\u2019s cloud API", done: true },
+                          { step: "2", text: "The decode engine is scanning every pixel for the invisible watermark pattern", done: false },
+                          { step: "3", text: "If found, Verda traces it back to the original creator and post", done: false },
+                        ].map((s) => (
+                          <div key={s.step} style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+                            <span style={{ width: 20, height: 20, borderRadius: 6, background: s.done ? "var(--pp-amber-soft)" : "var(--pp-card)", border: `1px solid ${s.done ? "var(--pp-amber-bd)" : "var(--pp-bd)"}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 700, color: s.done ? "var(--pp-amber-text)" : "var(--pp-fg4)", flex: "0 0 auto" }}>{s.done ? "\u2713" : s.step}</span>
+                            <span style={{ fontSize: 12, color: "var(--pp-fg3)", lineHeight: 1.4 }}>{s.text}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                  <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(23px,3.2vw,32px)", margin: "0 0 6px" }}>
-                    {decodeResult.match ? "Watermark detected" : "No watermark found"}
-                  </h2>
-                  <p style={{ fontSize: 14, color: "var(--pp-fg3)", margin: 0, lineHeight: 1.45 }}>
-                    {decodeResult.match
-                      ? <>Even after a <strong style={{ color: "var(--pp-text)" }}>{manipLabels}</strong>, Verda found the mark.</>
-                      : "This manipulation was aggressive enough to destroy the watermark."
-                    }
-                  </p>
-                </div>
+                )}
+
+                {/* Completed result */}
+                {!scanning && (
+                  <>
+                    <div style={{ textAlign: "center", marginBottom: 20 }}>
+                      <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 16px", borderRadius: 999, background: caught ? "var(--pp-amber-soft)" : "rgba(248,113,113,0.15)", border: `1px solid ${caught ? "var(--pp-amber-bd)" : "rgba(248,113,113,0.3)"}`, color: caught ? "var(--pp-amber-text)" : "var(--pp-red)", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 13, letterSpacing: "0.06em", marginBottom: 14 }}>
+                        <ShieldCheck size={16} />
+                        {caught ? "CAUGHT" : "EVADED"}
+                      </div>
+                      <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(23px,3.2vw,32px)", margin: "0 0 6px" }}>
+                        {caught ? "Watermark detected" : "No watermark found"}
+                      </h2>
+                      <p style={{ fontSize: 14, color: "var(--pp-fg3)", margin: 0, lineHeight: 1.45 }}>
+                        {caught
+                          ? <>Even after <strong style={{ color: "var(--pp-text)" }}>{manipLabels}</strong>, Verda found the mark.</>
+                          : "This manipulation was aggressive enough to destroy the watermark."
+                        }
+                      </p>
+                    </div>
+                  </>
+                )}
+
                 <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 16 }}>
-                  {/* Comparison — labels and images in separate rows for alignment */}
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 6 }}>
-                    <div style={{ fontSize: 11, color: "var(--pp-fg4)", textAlign: "center", display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 5, minHeight: 32 }}>
-                      <Fingerprint size={11} style={{ color: "var(--pp-amber)" }} />
-                      Original
-                    </div>
-                    <div style={{ fontSize: 11, color: "var(--pp-fg4)", textAlign: "center", display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 5, minHeight: 32 }}>
-                      Stolen + <span style={{ color: "var(--pp-purple-text)" }}>{manipLabels}</span>
-                    </div>
-                  </div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-                    <div style={{ position: "relative", borderRadius: 13, overflow: "hidden", border: "1px solid var(--pp-bd)" }}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={image.src} alt="Original" style={{ width: "100%", height: "auto", display: "block" }} />
-                      <span style={{ position: "absolute", top: 7, right: 7, width: 22, height: 22, borderRadius: 7, background: "rgba(15,17,18,0.7)", border: "1px solid var(--pp-amber-bd)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--pp-amber)" }}><Fingerprint size={12} /></span>
-                    </div>
-                    <div style={{ position: "relative", borderRadius: 13, overflow: "hidden", border: "1px solid var(--pp-purple-bd)" }}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={previewUrl || image.src} alt="Manipulated" style={{ width: "100%", height: "auto", display: "block" }} />
-                      <span style={{ position: "absolute", top: 7, right: 7, fontSize: 9, fontWeight: 700, textTransform: "uppercase", color: "var(--pp-purple-text)", background: "rgba(15,17,18,0.78)", border: "1px solid var(--pp-purple-bd)", padding: "2px 7px", borderRadius: 99 }}>{manipLabels}</span>
-                    </div>
-                  </div>
+                  {/* Comparison — only show when done */}
+                  {!scanning && (
+                    <>
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 6 }}>
+                        <div style={{ fontSize: 11, color: "var(--pp-fg4)", textAlign: "center", display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 5, minHeight: 32 }}>
+                          <Fingerprint size={11} style={{ color: "var(--pp-amber)" }} />
+                          Original
+                        </div>
+                        <div style={{ fontSize: 11, color: "var(--pp-fg4)", textAlign: "center", display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 5, minHeight: 32 }}>
+                          Stolen + <span style={{ color: "var(--pp-purple-text)" }}>{manipLabels}</span>
+                        </div>
+                      </div>
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                        <div style={{ position: "relative", borderRadius: 13, overflow: "hidden", border: "1px solid var(--pp-bd)" }}>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={image.src} alt="Original" style={{ width: "100%", height: "auto", display: "block" }} />
+                          <span style={{ position: "absolute", top: 7, right: 7, width: 22, height: 22, borderRadius: 7, background: "rgba(15,17,18,0.7)", border: "1px solid var(--pp-amber-bd)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--pp-amber)" }}><Fingerprint size={12} /></span>
+                        </div>
+                        <div style={{ position: "relative", borderRadius: 13, overflow: "hidden", border: "1px solid var(--pp-purple-bd)" }}>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={previewUrl || image.src} alt="Manipulated" style={{ width: "100%", height: "auto", display: "block" }} />
+                          <span style={{ position: "absolute", top: 7, right: 7, fontSize: 9, fontWeight: 700, textTransform: "uppercase", color: "var(--pp-purple-text)", background: "rgba(15,17,18,0.78)", border: "1px solid var(--pp-purple-bd)", padding: "2px 7px", borderRadius: 99 }}>{manipLabels}</span>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                  {!scanning && (
                   <div>
-                    {/* Trace result */}
+                    {/* Trace result card */}
                     <div style={{ borderRadius: 18, border: "1px solid var(--pp-bd)", background: "var(--pp-card2)", padding: 18, marginBottom: 14 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 7, fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 13, marginBottom: 14 }}>
                         <Fingerprint size={15} style={{ color: "var(--pp-amber)" }} />
@@ -540,13 +545,13 @@ export function SoloDemo({ onBack }: SoloDemoProps) {
                       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
                         <div>
                           <div style={{ fontSize: 11, color: "var(--pp-fg4)", marginBottom: 3 }}>Result</div>
-                          <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 22, color: decodeResult.match ? "var(--pp-green)" : "var(--pp-red)", lineHeight: 1 }}>
-                            {decodeResult.match ? "Match" : "No match"}
+                          <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 22, color: caught ? "var(--pp-green)" : "var(--pp-red)", lineHeight: 1 }}>
+                            {caught ? "Match" : "No match"}
                           </div>
                         </div>
                         <div>
                           <div style={{ fontSize: 11, color: "var(--pp-fg4)", marginBottom: 3 }}>Traced to</div>
-                          <div style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 15 }}>{decodeResult.match ? image.handle : "\u2014"}</div>
+                          <div style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 15 }}>{caught ? image.handle : "\u2014"}</div>
                         </div>
                         <div>
                           <div style={{ fontSize: 11, color: "var(--pp-fg4)", marginBottom: 3 }}>Manipulation</div>
@@ -554,18 +559,37 @@ export function SoloDemo({ onBack }: SoloDemoProps) {
                         </div>
                         <div>
                           <div style={{ fontSize: 11, color: "var(--pp-fg4)", marginBottom: 3 }}>Watermark</div>
-                          <div style={{ fontSize: 14, color: decodeResult.match ? "var(--pp-green)" : "var(--pp-red)" }}>
-                            {decodeResult.match ? "Survived" : "Destroyed"}
+                          <div style={{ fontSize: 14, color: caught ? "var(--pp-green)" : "var(--pp-red)" }}>
+                            {caught ? "Survived" : "Destroyed"}
                           </div>
                         </div>
+                      </div>
+                    </div>
+                    {/* What happened explainer */}
+                    <div style={{ borderRadius: 14, border: "1px solid var(--pp-bd)", background: "var(--pp-card)", padding: 16, marginBottom: 14 }}>
+                      <div style={{ fontSize: 12, fontWeight: 600, color: "var(--pp-fg2)", marginBottom: 10, fontFamily: "var(--font-display)" }}>What just happened</div>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                        {[
+                          { text: `You applied ${manipLabels} to disguise the stolen image`, color: "var(--pp-purple-text)" },
+                          { text: "The manipulated file was sent to Verda\u2019s decode API", color: "var(--pp-amber-text)" },
+                          { text: "Verda scanned every pixel for the invisible watermark pattern", color: "var(--pp-amber-text)" },
+                          { text: caught
+                            ? `The watermark survived \u2014 traced back to ${image.handle}`
+                            : "The watermark was destroyed by the manipulation", color: caught ? "var(--pp-green)" : "var(--pp-red)" },
+                        ].map((s, i) => (
+                          <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+                            <span style={{ width: 20, height: 20, borderRadius: 6, background: "var(--pp-card2)", border: "1px solid var(--pp-bd)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 700, color: s.color, flex: "0 0 auto" }}>{i + 1}</span>
+                            <span style={{ fontSize: 12, color: "var(--pp-fg3)", lineHeight: 1.4 }}>{s.text}</span>
+                          </div>
+                        ))}
                       </div>
                     </div>
                     <div style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "13px 15px", borderRadius: 14, background: "var(--pp-amber-soft)", border: "1px solid var(--pp-amber-bd)", marginBottom: 16 }}>
                       <Sparkles size={17} style={{ color: "var(--pp-amber)", flex: "0 0 auto", marginTop: 1 }} />
                       <span style={{ fontSize: 13, color: "var(--pp-fg2)", lineHeight: 1.45 }}>
-                        {decodeResult.match
-                          ? "Verda\u2019s watermarks survive real manipulation. The content always traces back to its creator."
-                          : "Some extreme manipulations can break the watermark \u2014 but they also destroy the content quality."}
+                        {caught
+                          ? "Verda\u2019s invisible watermarks are embedded across the entire image \u2014 not just a visible logo. They survive cropping, filtering, screenshotting, and more."
+                          : "Some extreme manipulations can destroy the watermark \u2014 but they also degrade the content so much it loses its value."}
                       </span>
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -573,9 +597,11 @@ export function SoloDemo({ onBack }: SoloDemoProps) {
                       <button onClick={onBack} className="btn-outline" style={{ width: "100%", padding: 14, fontSize: 15 }}><Users size={16} />Back to home</button>
                     </div>
                   </div>
+                  )}
                 </div>
               </div>
-            )}
+              );
+            })()}
           </div>
         </div>
       </div>

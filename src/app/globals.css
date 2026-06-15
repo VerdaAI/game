@@ -145,14 +145,15 @@
     gap: 9px;
     border-radius: 999px;
     border: none;
-    background: var(--pp-purple);
-    color: var(--pp-purple-ink);
+    background: var(--pp-amber);
+    color: var(--pp-amber-ink);
     font-family: var(--font-display);
     font-weight: 700;
     cursor: pointer;
-    transition: opacity 0.2s;
+    transition: background 0.2s;
+    box-shadow: 0 4px 16px -4px rgba(255, 166, 43, 0.3);
   }
-  .btn-purple:hover { opacity: 0.9; }
+  .btn-purple:hover { background: var(--pp-amber-hover); }
 
   /* Badges */
   .badge-protector {
