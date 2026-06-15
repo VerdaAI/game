@@ -12,7 +12,7 @@ from io import BytesIO
 import requests
 from PIL import Image, ImageFilter, ImageEnhance
 
-API_KEY = "vk_a2ef9406b5d75bdd7c5fcc09a7ad1c1a"
+API_KEY = os.environ.get("VERDA_API_KEY", "")
 API_BASE = "https://api.verda.ai/api/v2/enterprise"
 IMAGES_DIR = Path(__file__).resolve().parent.parent / "public" / "content" / "images"
 
