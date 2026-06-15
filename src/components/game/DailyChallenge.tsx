@@ -633,7 +633,16 @@ export function DailyChallenge({ onBack }: DailyChallengeProps) {
               <div style={{ display: "flex", gap: 10 }}>
                 <button
                   onClick={async () => {
-                    const blob = await generateShareCard({ playerName, score: totalScore, rounds: TOTAL_ROUNDS, evaded: evadedCount, caught: caughtCount, bestHeist: bestHeist });
+                    const blob = await generateShareCard({
+                      playerName,
+                      score: totalScore,
+                      rounds: TOTAL_ROUNDS,
+                      evaded: evadedCount,
+                      caught: caughtCount,
+                      bestHeist: bestHeist,
+                      images: results.map((r) => ({ previewUrl: r.previewUrl, imageSrc: r.imageSrc, caught: r.caught, points: r.points })),
+                      leaderboard: leaderboard.slice(0, 5).map((e) => ({ name: e.player_name, score: e.effective_score, isYou: e.player_name.toLowerCase().trim() === playerName.toLowerCase().trim() })),
+                    });
                     shareOrDownload(blob);
                   }}
                   className="btn-purple"
@@ -644,7 +653,16 @@ export function DailyChallenge({ onBack }: DailyChallengeProps) {
                 </button>
                 <button
                   onClick={async () => {
-                    const blob = await generateShareCard({ playerName, score: totalScore, rounds: TOTAL_ROUNDS, evaded: evadedCount, caught: caughtCount, bestHeist: bestHeist });
+                    const blob = await generateShareCard({
+                      playerName,
+                      score: totalScore,
+                      rounds: TOTAL_ROUNDS,
+                      evaded: evadedCount,
+                      caught: caughtCount,
+                      bestHeist: bestHeist,
+                      images: results.map((r) => ({ previewUrl: r.previewUrl, imageSrc: r.imageSrc, caught: r.caught, points: r.points })),
+                      leaderboard: leaderboard.slice(0, 5).map((e) => ({ name: e.player_name, score: e.effective_score, isYou: e.player_name.toLowerCase().trim() === playerName.toLowerCase().trim() })),
+                    });
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement("a");
                     a.href = url;
