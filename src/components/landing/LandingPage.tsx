@@ -30,6 +30,7 @@ import {
   Send,
 } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
+import { ScanOverlay } from "@/components/game/ScanOverlay";
 
 interface LandingPageProps {
   onDemo: () => void;
@@ -385,7 +386,7 @@ export function LandingPage({ onDemo, onPlay }: LandingPageProps) {
                       flagged
                     </span>
                   </div>
-                  {/* Image placeholder with scan */}
+                  {/* Image with pixelated scan overlay */}
                   <div
                     style={{
                       position: "relative",
@@ -395,18 +396,10 @@ export function LandingPage({ onDemo, onPlay }: LandingPageProps) {
                       background: "url(/content/images/demo-01.jpg) center/cover",
                     }}
                   >
-                    <div
-                      style={{
-                        position: "absolute",
-                        left: 0,
-                        right: 0,
-                        height: 60,
-                        background:
-                          "linear-gradient(180deg,transparent,rgba(255,166,43,0.55),transparent)",
-                        boxShadow: "0 0 30px rgba(255,166,43,0.4)",
-                        animation: "pp-scan 2.4s ease-in-out infinite",
-                      }}
-                    />
+                    {/* Dim the image */}
+                    <div style={{ position: "absolute", inset: 0, background: "rgba(13,13,17,0.4)", zIndex: 1 }} />
+                    {/* Pixel grid scan overlay */}
+                    <ScanOverlay width={278} height={200} />
                     <div
                       style={{
                         position: "absolute",
