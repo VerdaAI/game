@@ -519,6 +519,28 @@ export function DailyChallenge({ onBack }: DailyChallengeProps) {
               ))}
             </div>
 
+            {/* Image collage — original vs stolen for each round */}
+            <Card>
+              <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 14, marginBottom: 12, display: "flex", alignItems: "center", gap: 7 }}>
+                <Fingerprint size={14} style={{ color: "var(--pp-amber)" }} />
+                Your heists
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: `repeat(${Math.min(results.length, 5)}, 1fr)`, gap: 6 }}>
+                {results.map((r) => (
+                  <div key={r.round} style={{ position: "relative", borderRadius: 10, overflow: "hidden", border: `1.5px solid ${r.caught === null ? "var(--pp-amber-bd)" : r.caught ? "var(--pp-amber-bd)" : "rgba(74,222,128,0.4)"}` }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={r.previewUrl || r.imageSrc} alt={`R${r.round}`} style={{ width: "100%", height: "auto", display: "block" }} />
+                    {/* Status badge */}
+                    <span style={{ position: "absolute", top: 4, left: 4, display: "inline-flex", alignItems: "center", gap: 3, fontSize: 8, fontWeight: 700, padding: "2px 5px", borderRadius: 99, background: r.caught === null ? "rgba(255,166,43,0.9)" : r.caught ? "rgba(255,166,43,0.9)" : "rgba(74,222,128,0.9)", color: r.caught === null ? "var(--pp-amber-ink)" : r.caught ? "var(--pp-amber-ink)" : "#0d1a0f" }}>
+                      {r.caught === null ? "..." : r.caught ? <><ShieldCheck size={8} />Caught</> : <><Skull size={8} />+{r.points}</>}
+                    </span>
+                    {/* Round number */}
+                    <span style={{ position: "absolute", bottom: 3, right: 4, fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.7)", fontFamily: "ui-monospace, monospace" }}>R{r.round}</span>
+                  </div>
+                ))}
+              </div>
+            </Card>
+
             {/* Round breakdown */}
             <Card>
               <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 14, marginBottom: 12, display: "flex", alignItems: "center", gap: 7 }}>
