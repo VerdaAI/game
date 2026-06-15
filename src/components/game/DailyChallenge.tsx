@@ -197,15 +197,21 @@ export function DailyChallenge({ onBack }: DailyChallengeProps) {
     const currentImage = selectedImage;
     const currentManipLabels = manipLabels;
     const currentManipCount = manips.length;
-    const currentPreviewUrl = previewUrl;
     const blobToSend = manipBlob;
+
+    // Convert blob to data URL so it persists after blob URL is revoked
+    const persistentUrl = await new Promise<string>((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.readAsDataURL(blobToSend);
+    });
 
     // Add a pending result
     const pendingResult: RoundResult = {
       round: currentRound,
       imageHandle: currentImage.handle,
       imageSrc: currentImage.src,
-      previewUrl: currentPreviewUrl,
+      previewUrl: persistentUrl,
       manipulations: currentManipLabels,
       caught: null, // pending
       points: 0,
