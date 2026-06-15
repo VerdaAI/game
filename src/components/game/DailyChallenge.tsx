@@ -32,6 +32,7 @@ import {
   Timer,
   Crown,
   Loader2,
+  Download,
 } from "lucide-react";
 import {
   MANIPULATIONS,
@@ -42,6 +43,7 @@ import {
 } from "@/lib/game/manipulations";
 import { ScanOverlay } from "./ScanOverlay";
 import { Logo } from "@/components/ui/Logo";
+import { generateShareCard, shareOrDownload } from "@/lib/game/share-card";
 import { submitScore, getWeeklyLeaderboard, type RankedEntry } from "@/lib/supabase";
 
 interface DailyChallengeProps {
@@ -591,6 +593,39 @@ export function DailyChallenge({ onBack }: DailyChallengeProps) {
                   );
                 })}
               </Card>
+            )}
+
+            {/* Share + Save */}
+            {pendingScans === 0 && (
+              <div style={{ display: "flex", gap: 10 }}>
+                <button
+                  onClick={async () => {
+                    const blob = await generateShareCard({ playerName, score: totalScore, rounds: TOTAL_ROUNDS, evaded: evadedCount, caught: caughtCount, bestHeist: bestHeist });
+                    shareOrDownload(blob);
+                  }}
+                  className="btn-purple"
+                  style={{ flex: 1, padding: 14, fontSize: 15 }}
+                >
+                  <Share2 size={16} />
+                  Share
+                </button>
+                <button
+                  onClick={async () => {
+                    const blob = await generateShareCard({ playerName, score: totalScore, rounds: TOTAL_ROUNDS, evaded: evadedCount, caught: caughtCount, bestHeist: bestHeist });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = "protect-or-pirate.png";
+                    a.click();
+                    URL.revokeObjectURL(url);
+                  }}
+                  className="btn-outline"
+                  style={{ flex: 1, padding: 14, fontSize: 15 }}
+                >
+                  <Download size={16} />
+                  Save Image
+                </button>
+              </div>
             )}
 
             {/* CTAs */}
