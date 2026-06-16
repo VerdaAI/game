@@ -97,7 +97,7 @@ export async function generateShareCard(data: ShareCardData): Promise<Blob> {
   // === TITLE ===
   ctx.fillStyle = "#FCFDFD";
   ctx.font = "700 56px 'Urbanist', system-ui, sans-serif";
-  ctx.fillText("Protect or Pirate", cx, y);
+  ctx.fillText("Evade Verda", cx, y);
   y += 70;
 
   // === PLAYER BADGE ===
@@ -311,14 +311,14 @@ export async function generateShareCard(data: ShareCardData): Promise<Blob> {
   });
 }
 
-export async function shareOrDownload(blob: Blob, filename = "protect-or-pirate.png") {
+export async function shareOrDownload(blob: Blob, filename = "evade-verda.png") {
   const file = new File([blob], filename, { type: "image/png" });
 
   if (navigator.share && navigator.canShare?.({ files: [file] })) {
     try {
       await navigator.share({
         files: [file],
-        title: "Protect or Pirate — Verda",
+        title: "Evade Verda — Verda",
         text: "Can you evade Verda's invisible watermark? Try to beat my score!",
       });
       return;

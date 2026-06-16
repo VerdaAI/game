@@ -213,7 +213,7 @@ export function SoloDemo({ onBack }: SoloDemoProps) {
             <span style={{ width: 11, height: 11, borderRadius: "50%", background: "#4a4d50" }} />
             <span style={{ width: 11, height: 11, borderRadius: "50%", background: "#4a4d50" }} />
             <span style={{ marginLeft: 10, fontFamily: "ui-monospace, monospace", fontSize: 11, color: "var(--pp-fg4)", background: "var(--pp-bg)", border: "1px solid var(--pp-bd)", borderRadius: 8, padding: "3px 12px" }}>
-              protect-or-pirate.verda.ai/demo
+              evade.verda.ai/demo
             </span>
           </div>
 

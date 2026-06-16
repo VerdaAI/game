@@ -23,13 +23,13 @@ const hostGrotesk = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Protect or Pirate | Verda",
+  title: "Evade Verda",
   description:
-    "Can you steal content without getting caught? Play the watermark game and find out.",
+    "Can you evade Verda's invisible watermark? Disguise stolen content and find out.",
   openGraph: {
-    title: "Protect or Pirate | Verda",
+    title: "Evade Verda",
     description:
-      "Can you steal content without getting caught? Play the watermark game and find out.",
+      "Can you evade Verda's invisible watermark? Disguise stolen content and find out.",
     type: "website",
   },
 };

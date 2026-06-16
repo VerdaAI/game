@@ -33,7 +33,7 @@ export function SplashScreen({ onSoloDemo, onMultiplayer }: SplashScreenProps) {
 
         {/* Title */}
         <h1 className="text-5xl sm:text-6xl font-display font-bold tracking-tight gradient-text mb-4">
-          Protect or Pirate
+          Evade Verda
         </h1>
 
         {/* Subtitle */}

@@ -677,7 +677,7 @@ export function DailyChallenge({ onBack }: DailyChallengeProps) {
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement("a");
                     a.href = url;
-                    a.download = "protect-or-pirate.png";
+                    a.download = "evade-verda.png";
                     a.click();
                     URL.revokeObjectURL(url);
                   }}
