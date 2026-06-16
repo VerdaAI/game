@@ -506,6 +506,17 @@ export function DailyChallenge({ onBack }: DailyChallengeProps) {
                 </div>
                 <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 42, color: "var(--pp-purple-text)", lineHeight: 1 }}>{totalScore}</div>
                 <div style={{ fontSize: 14, color: "var(--pp-fg3)", marginTop: 4 }}>points scored</div>
+                {(() => {
+                  const myEntry = leaderboard.find((e) => e.player_name.toLowerCase().trim() === playerName.toLowerCase().trim());
+                  if (myEntry && myEntry.penalty > 0) {
+                    return (
+                      <div style={{ marginTop: 10, display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 99, background: "rgba(248,113,113,0.12)", border: "1px solid rgba(248,113,113,0.25)", fontSize: 13, color: "var(--pp-red)" }}>
+                        -{myEntry.penalty} retry penalty ({myEntry.attempts} attempts) &middot; Leaderboard score: <strong style={{ color: "var(--pp-text)", marginLeft: 4 }}>{myEntry.effective_score}</strong>
+                      </div>
+                    );
+                  }
+                  return null;
+                })()}
               </div>
             </div>
 
