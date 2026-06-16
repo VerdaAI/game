@@ -31,7 +31,7 @@ export const MANIPULATIONS: ManipulationDef[] = [
   { key: "resize", label: "Resize", description: "Scale down then back up (loses detail)", icon: "maximize-2" },
   { key: "border", label: "Add Border", description: "Add a colored border or frame around the image", icon: "square" },
   { key: "overlay_watermark", label: "Platform Watermark", description: "Overlay a fake social media watermark", icon: "at-sign" },
-  { key: "compress", label: "Heavy Compress", description: "Re-save as low-quality JPEG (compression artifacts)", icon: "file-minus" },
+  { key: "compress", label: "JPEG Compress", description: "Re-save as compressed JPEG (compression artifacts)", icon: "file-minus" },
 ];
 
 function createCanvas(width: number, height: number): [HTMLCanvasElement, CanvasRenderingContext2D] {
@@ -181,7 +181,7 @@ export function applyRemoveWatermark(img: HTMLImageElement, strength: "light" | 
  * Adjusted to keep light/medium in survivable range
  */
 export function applyCompress(img: HTMLImageElement, strength: "light" | "medium" | "heavy" = "medium"): Promise<Blob> {
-  const qualityMap = { light: 0.55, medium: 0.35, heavy: 0.15 };
+  const qualityMap = { light: 0.70, medium: 0.55, heavy: 0.35 };
   const [c, ctx] = createCanvas(img.naturalWidth, img.naturalHeight);
   ctx.drawImage(img, 0, 0);
   return canvasToBlob(c, qualityMap[strength]);
