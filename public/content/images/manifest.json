@@ -26,7 +26,7 @@
       "id": "demo-03",
       "filename": "demo-03.jpg",
       "src": "/content/images/demo-03.jpg",
-      "watermark_ref": null,
+      "watermark_ref": "76387f62-aeb0-451a-97ef-2396500e5cb0",
       "creator": {
         "handle": "@aishapatel",
         "name": "Aisha Patel",
@@ -48,7 +48,7 @@
       "id": "demo-05",
       "filename": "demo-05.jpg",
       "src": "/content/images/demo-05.jpg",
-      "watermark_ref": null,
+      "watermark_ref": "1f0ef0b9-4e49-4718-b4d8-8e08ec301b36",
       "creator": {
         "handle": "@lena.wilde",
         "name": "Lena Wilde",
@@ -59,7 +59,7 @@
       "id": "demo-06",
       "filename": "demo-06.jpg",
       "src": "/content/images/demo-06.jpg",
-      "watermark_ref": null,
+      "watermark_ref": "87cbea63-5ca6-44ef-8d87-ab68bee04e75",
       "creator": {
         "handle": "@kofi.builds",
         "name": "Kofi Mensah",
@@ -126,7 +126,7 @@
       "id": "demo-12",
       "filename": "demo-12.jpg",
       "src": "/content/images/demo-12.jpg",
-      "watermark_ref": "89ab4e10-f9d2-4951-8fab-a042064d8fe9",
+      "watermark_ref": "05e75be5-7db8-4cbf-806e-3e2135216089",
       "content_id": "1f20d1bf-3f1e-4d25-b741-1ec61c5672e6",
       "creator": {
         "handle": "@maxshot",
@@ -162,7 +162,7 @@
       "id": "demo-15",
       "filename": "demo-15.jpg",
       "src": "/content/images/demo-15.jpg",
-      "watermark_ref": "f564813e-7b2b-4bf0-8f21-43b534524b85",
+      "watermark_ref": "34b99153-5faf-4388-80f8-0da7a63e35c7",
       "content_id": "911fb900-808c-41da-a4e4-b101375135ba",
       "creator": {
         "handle": "@zuri.frames",
@@ -186,7 +186,7 @@
       "id": "demo-17",
       "filename": "demo-17.jpg",
       "src": "/content/images/demo-17.jpg",
-      "watermark_ref": "f844ba1d-e503-46b8-a4d0-affd78c6d1e3",
+      "watermark_ref": "b833fdb6-611d-4be9-95d9-247f8cebbeea",
       "content_id": "5fc082e8-6d8b-40b3-908e-e9723ddf5c9e",
       "creator": {
         "handle": "@elena.pix",
@@ -258,7 +258,7 @@
       "id": "demo-23",
       "filename": "demo-23.jpg",
       "src": "/content/images/demo-23.jpg",
-      "watermark_ref": "684fccdd-f839-4529-aa86-58c732e75734",
+      "watermark_ref": "3fce29b9-f9c9-4790-b352-12d04345745d",
       "content_id": "f1437885-281f-46bb-a642-7d4e4eeb21eb",
       "creator": {
         "handle": "@amara.eye",
@@ -270,7 +270,7 @@
       "id": "demo-24",
       "filename": "demo-24.jpg",
       "src": "/content/images/demo-24.jpg",
-      "watermark_ref": "3300b726-31bb-44b6-931f-a64865cf9fc8",
+      "watermark_ref": "f61745a8-73dd-47df-aca0-fb87c2cedb96",
       "content_id": "abe86c37-0446-4003-9506-7190b57ba543",
       "creator": {
         "handle": "@leo.studio",
@@ -318,7 +318,7 @@
       "id": "demo-28",
       "filename": "demo-28.jpg",
       "src": "/content/images/demo-28.jpg",
-      "watermark_ref": "4d29ee06-6f2f-4019-bd4e-82e111c80c69",
+      "watermark_ref": "ec4bf87f-dd9a-4c74-8b46-af5e7ea6c67b",
       "content_id": "cc2c12d9-8e32-4293-bb89-03d55823891d",
       "creator": {
         "handle": "@ravi.pics",
@@ -330,7 +330,7 @@
       "id": "demo-29",
       "filename": "demo-29.jpg",
       "src": "/content/images/demo-29.jpg",
-      "watermark_ref": "30e44987-89cb-4460-8b32-9b14c866d9eb",
+      "watermark_ref": "eb1b18df-405f-4097-aba8-4e4d65227302",
       "content_id": "db0c9f65-c3b0-4255-817e-e1c22140308e",
       "creator": {
         "handle": "@clara.view",

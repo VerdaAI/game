@@ -1,0 +1,508 @@
+{
+  "remove_wm": {
+    "matches": 30,
+    "total": 30,
+    "rate": 100.0,
+    "misses": []
+  },
+  "filter": {
+    "matches": 27,
+    "total": 30,
+    "rate": 90.0,
+    "misses": [
+      "demo-06.jpg",
+      "demo-12.jpg",
+      "demo-23.jpg"
+    ]
+  },
+  "screenshot": {
+    "matches": 28,
+    "total": 30,
+    "rate": 93.3,
+    "misses": [
+      "demo-06.jpg",
+      "demo-17.jpg"
+    ]
+  },
+  "crop": {
+    "matches": 30,
+    "total": 30,
+    "rate": 100.0,
+    "misses": []
+  },
+  "mirror": {
+    "matches": 30,
+    "total": 30,
+    "rate": 100.0,
+    "misses": []
+  },
+  "resize": {
+    "matches": 30,
+    "total": 30,
+    "rate": 100.0,
+    "misses": []
+  },
+  "border": {
+    "matches": 29,
+    "total": 30,
+    "rate": 96.7,
+    "misses": [
+      "demo-02.jpg"
+    ]
+  },
+  "overlay_wm": {
+    "matches": 30,
+    "total": 30,
+    "rate": 100.0,
+    "misses": []
+  },
+  "compress": {
+    "matches": 18,
+    "total": 30,
+    "rate": 60.0,
+    "misses": [
+      "demo-05.jpg",
+      "demo-06.jpg",
+      "demo-10.jpg",
+      "demo-14.jpg",
+      "demo-18.jpg",
+      "demo-20.jpg",
+      "demo-21.jpg",
+      "demo-22.jpg",
+      "demo-24.jpg",
+      "demo-27.jpg",
+      "demo-28.jpg",
+      "demo-29.jpg"
+    ]
+  },
+  "remove_wm+crop": {
+    "matches": 30,
+    "total": 30,
+    "rate": 100.0,
+    "misses": []
+  },
+  "remove_wm+filter": {
+    "matches": 26,
+    "total": 30,
+    "rate": 86.7,
+    "misses": [
+      "demo-06.jpg",
+      "demo-12.jpg",
+      "demo-15.jpg",
+      "demo-23.jpg"
+    ]
+  },
+  "remove_wm+mirror": {
+    "matches": 30,
+    "total": 30,
+    "rate": 100.0,
+    "misses": []
+  },
+  "remove_wm+compress": {
+    "matches": 16,
+    "total": 30,
+    "rate": 53.3,
+    "misses": [
+      "demo-05.jpg",
+      "demo-06.jpg",
+      "demo-10.jpg",
+      "demo-14.jpg",
+      "demo-17.jpg",
+      "demo-18.jpg",
+      "demo-19.jpg",
+      "demo-20.jpg",
+      "demo-21.jpg",
+      "demo-22.jpg",
+      "demo-24.jpg",
+      "demo-27.jpg",
+      "demo-28.jpg",
+      "demo-29.jpg"
+    ]
+  },
+  "remove_wm+screenshot": {
+    "matches": 29,
+    "total": 30,
+    "rate": 96.7,
+    "misses": [
+      "demo-17.jpg"
+    ]
+  },
+  "remove_wm+border": {
+    "matches": 29,
+    "total": 30,
+    "rate": 96.7,
+    "misses": [
+      "demo-02.jpg"
+    ]
+  },
+  "crop+compress": {
+    "matches": 17,
+    "total": 30,
+    "rate": 56.7,
+    "misses": [
+      "demo-05.jpg",
+      "demo-06.jpg",
+      "demo-07.jpg",
+      "demo-08.jpg",
+      "demo-10.jpg",
+      "demo-17.jpg",
+      "demo-18.jpg",
+      "demo-19.jpg",
+      "demo-23.jpg",
+      "demo-24.jpg",
+      "demo-25.jpg",
+      "demo-27.jpg",
+      "demo-28.jpg"
+    ]
+  },
+  "crop+border": {
+    "matches": 28,
+    "total": 30,
+    "rate": 93.3,
+    "misses": [
+      "demo-01.jpg",
+      "demo-06.jpg"
+    ]
+  },
+  "crop+filter": {
+    "matches": 28,
+    "total": 30,
+    "rate": 93.3,
+    "misses": [
+      "demo-06.jpg",
+      "demo-12.jpg"
+    ]
+  },
+  "crop+resize": {
+    "matches": 30,
+    "total": 30,
+    "rate": 100.0,
+    "misses": []
+  },
+  "filter+compress": {
+    "matches": 11,
+    "total": 30,
+    "rate": 36.7,
+    "misses": [
+      "demo-01.jpg",
+      "demo-03.jpg",
+      "demo-05.jpg",
+      "demo-06.jpg",
+      "demo-08.jpg",
+      "demo-10.jpg",
+      "demo-12.jpg",
+      "demo-14.jpg",
+      "demo-15.jpg",
+      "demo-17.jpg",
+      "demo-19.jpg",
+      "demo-20.jpg",
+      "demo-21.jpg",
+      "demo-22.jpg",
+      "demo-23.jpg",
+      "demo-24.jpg",
+      "demo-27.jpg",
+      "demo-29.jpg",
+      "demo-30.jpg"
+    ]
+  },
+  "filter+screenshot": {
+    "matches": 24,
+    "total": 30,
+    "rate": 80.0,
+    "misses": [
+      "demo-06.jpg",
+      "demo-12.jpg",
+      "demo-15.jpg",
+      "demo-23.jpg",
+      "demo-24.jpg",
+      "demo-29.jpg"
+    ]
+  },
+  "mirror+compress": {
+    "matches": 17,
+    "total": 30,
+    "rate": 56.7,
+    "misses": [
+      "demo-02.jpg",
+      "demo-06.jpg",
+      "demo-11.jpg",
+      "demo-12.jpg",
+      "demo-14.jpg",
+      "demo-18.jpg",
+      "demo-21.jpg",
+      "demo-22.jpg",
+      "demo-23.jpg",
+      "demo-24.jpg",
+      "demo-27.jpg",
+      "demo-28.jpg",
+      "demo-29.jpg"
+    ]
+  },
+  "mirror+filter": {
+    "matches": 29,
+    "total": 30,
+    "rate": 96.7,
+    "misses": [
+      "demo-06.jpg"
+    ]
+  },
+  "border+compress": {
+    "matches": 9,
+    "total": 30,
+    "rate": 30.0,
+    "misses": [
+      "demo-01.jpg",
+      "demo-03.jpg",
+      "demo-04.jpg",
+      "demo-05.jpg",
+      "demo-06.jpg",
+      "demo-07.jpg",
+      "demo-08.jpg",
+      "demo-10.jpg",
+      "demo-11.jpg",
+      "demo-12.jpg",
+      "demo-14.jpg",
+      "demo-15.jpg",
+      "demo-17.jpg",
+      "demo-18.jpg",
+      "demo-21.jpg",
+      "demo-22.jpg",
+      "demo-23.jpg",
+      "demo-24.jpg",
+      "demo-27.jpg",
+      "demo-28.jpg",
+      "demo-29.jpg"
+    ]
+  },
+  "resize+compress": {
+    "matches": 19,
+    "total": 30,
+    "rate": 63.3,
+    "misses": [
+      "demo-05.jpg",
+      "demo-06.jpg",
+      "demo-10.jpg",
+      "demo-12.jpg",
+      "demo-14.jpg",
+      "demo-18.jpg",
+      "demo-22.jpg",
+      "demo-24.jpg",
+      "demo-26.jpg",
+      "demo-27.jpg",
+      "demo-28.jpg"
+    ]
+  },
+  "crop+compress+border": {
+    "matches": 12,
+    "total": 30,
+    "rate": 40.0,
+    "misses": [
+      "demo-03.jpg",
+      "demo-05.jpg",
+      "demo-06.jpg",
+      "demo-07.jpg",
+      "demo-08.jpg",
+      "demo-10.jpg",
+      "demo-12.jpg",
+      "demo-15.jpg",
+      "demo-17.jpg",
+      "demo-18.jpg",
+      "demo-19.jpg",
+      "demo-20.jpg",
+      "demo-22.jpg",
+      "demo-23.jpg",
+      "demo-24.jpg",
+      "demo-27.jpg",
+      "demo-28.jpg",
+      "demo-29.jpg"
+    ]
+  },
+  "crop+compress+filter": {
+    "matches": 12,
+    "total": 30,
+    "rate": 40.0,
+    "misses": [
+      "demo-05.jpg",
+      "demo-06.jpg",
+      "demo-07.jpg",
+      "demo-08.jpg",
+      "demo-10.jpg",
+      "demo-12.jpg",
+      "demo-14.jpg",
+      "demo-15.jpg",
+      "demo-17.jpg",
+      "demo-18.jpg",
+      "demo-19.jpg",
+      "demo-22.jpg",
+      "demo-23.jpg",
+      "demo-24.jpg",
+      "demo-25.jpg",
+      "demo-27.jpg",
+      "demo-29.jpg",
+      "demo-30.jpg"
+    ]
+  },
+  "crop+compress+resize": {
+    "matches": 16,
+    "total": 30,
+    "rate": 53.3,
+    "misses": [
+      "demo-05.jpg",
+      "demo-06.jpg",
+      "demo-07.jpg",
+      "demo-08.jpg",
+      "demo-10.jpg",
+      "demo-16.jpg",
+      "demo-17.jpg",
+      "demo-18.jpg",
+      "demo-19.jpg",
+      "demo-24.jpg",
+      "demo-25.jpg",
+      "demo-27.jpg",
+      "demo-28.jpg",
+      "demo-30.jpg"
+    ]
+  },
+  "remove_wm+crop+compress": {
+    "matches": 15,
+    "total": 30,
+    "rate": 50.0,
+    "misses": [
+      "demo-05.jpg",
+      "demo-06.jpg",
+      "demo-07.jpg",
+      "demo-08.jpg",
+      "demo-10.jpg",
+      "demo-14.jpg",
+      "demo-16.jpg",
+      "demo-17.jpg",
+      "demo-18.jpg",
+      "demo-19.jpg",
+      "demo-23.jpg",
+      "demo-24.jpg",
+      "demo-25.jpg",
+      "demo-27.jpg",
+      "demo-28.jpg"
+    ]
+  },
+  "remove_wm+filter+compress": {
+    "matches": 11,
+    "total": 30,
+    "rate": 36.7,
+    "misses": [
+      "demo-03.jpg",
+      "demo-05.jpg",
+      "demo-06.jpg",
+      "demo-08.jpg",
+      "demo-10.jpg",
+      "demo-12.jpg",
+      "demo-13.jpg",
+      "demo-14.jpg",
+      "demo-15.jpg",
+      "demo-17.jpg",
+      "demo-19.jpg",
+      "demo-21.jpg",
+      "demo-22.jpg",
+      "demo-23.jpg",
+      "demo-24.jpg",
+      "demo-26.jpg",
+      "demo-27.jpg",
+      "demo-29.jpg",
+      "demo-30.jpg"
+    ]
+  },
+  "remove_wm+crop+border": {
+    "matches": 29,
+    "total": 30,
+    "rate": 96.7,
+    "misses": [
+      "demo-06.jpg"
+    ]
+  },
+  "crop+border+filter": {
+    "matches": 26,
+    "total": 30,
+    "rate": 86.7,
+    "misses": [
+      "demo-01.jpg",
+      "demo-06.jpg",
+      "demo-12.jpg",
+      "demo-29.jpg"
+    ]
+  },
+  "mirror+crop+compress": {
+    "matches": 18,
+    "total": 30,
+    "rate": 60.0,
+    "misses": [
+      "demo-05.jpg",
+      "demo-06.jpg",
+      "demo-10.jpg",
+      "demo-12.jpg",
+      "demo-15.jpg",
+      "demo-16.jpg",
+      "demo-17.jpg",
+      "demo-24.jpg",
+      "demo-25.jpg",
+      "demo-27.jpg",
+      "demo-28.jpg",
+      "demo-29.jpg"
+    ]
+  },
+  "filter+compress+resize": {
+    "matches": 9,
+    "total": 30,
+    "rate": 30.0,
+    "misses": [
+      "demo-03.jpg",
+      "demo-05.jpg",
+      "demo-06.jpg",
+      "demo-08.jpg",
+      "demo-10.jpg",
+      "demo-12.jpg",
+      "demo-14.jpg",
+      "demo-15.jpg",
+      "demo-17.jpg",
+      "demo-19.jpg",
+      "demo-20.jpg",
+      "demo-21.jpg",
+      "demo-22.jpg",
+      "demo-23.jpg",
+      "demo-24.jpg",
+      "demo-25.jpg",
+      "demo-26.jpg",
+      "demo-27.jpg",
+      "demo-28.jpg",
+      "demo-29.jpg",
+      "demo-30.jpg"
+    ]
+  },
+  "remove_wm+mirror+crop": {
+    "matches": 29,
+    "total": 30,
+    "rate": 96.7,
+    "misses": [
+      "demo-06.jpg"
+    ]
+  },
+  "remove_wm+crop+filter": {
+    "matches": 28,
+    "total": 30,
+    "rate": 93.3,
+    "misses": [
+      "demo-06.jpg",
+      "demo-12.jpg"
+    ]
+  },
+  "crop+filter+border": {
+    "matches": 26,
+    "total": 30,
+    "rate": 86.7,
+    "misses": [
+      "demo-06.jpg",
+      "demo-12.jpg",
+      "demo-15.jpg",
+      "demo-23.jpg"
+    ]
+  }
+}
